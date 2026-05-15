@@ -1,0 +1,13 @@
+# Deployment manifest
+# Only items listed here are managed by the CI/CD pipeline.
+
+items:
+  - name: Sales Analytics
+    type: SemanticModel
+    workspace_key: analytics_hub
+    path: src/powerbi/hub/enterprise/semantic-models/Sales Analytics.SemanticModel
+
+  - name: Sales Performance
+    type: Report
+    workspace_key: sales_spoke
+    path: src/powerbi/spokes/sales/reports/Sales Performance.Report

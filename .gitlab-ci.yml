@@ -1,0 +1,56 @@
+stages:
+  - validate
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - python --version
+  - pip install -r requirements.txt
+
+validate_manifest:
+  stage: validate
+  image: python:3.11-slim
+  script:
+    - python scripts/validate_deployment_manifest.py --manifest deployment/powerbi-deploy.yml --bindings deployment/report-bindings.yml --rules deployment/deployment-rules.yml
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+# DEV deployment from develop branch
+deploy_dev:
+  stage: deploy
+  image: python:3.11-slim
+  script:
+    - python scripts/deploy.py --branch "$CI_COMMIT_BRANCH"
+  environment:
+    name: DEV
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+# SIT deployment from sit branch
+deploy_sit:
+  stage: deploy
+  image: python:3.11-slim
+  script:
+    - python scripts/deploy.py --branch "$CI_COMMIT_BRANCH"
+  environment:
+    name: SIT
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "sit"'
+
+# PRD deployment from main branch. Recommended: protect the main branch and add approval gates.
+deploy_prd:
+  stage: deploy
+  image: python:3.11-slim
+  script:
+    - python scripts/deploy.py --branch "$CI_COMMIT_BRANCH"
+  environment:
+    name: PRD
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

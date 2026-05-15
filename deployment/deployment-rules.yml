@@ -1,0 +1,20 @@
+# Branch-to-environment and environment-to-workspace routing.
+# Workspace IDs are resolved from GitLab CI/CD variables.
+
+branches:
+  develop: DEV
+  sit: SIT
+  main: PRD
+
+workspaces:
+  DEV:
+    analytics_hub: ${PBI_DEV_ANALYTICS_HUB_WORKSPACE_ID}
+    sales_spoke: ${PBI_DEV_SALES_SPOKE_WORKSPACE_ID}
+
+  SIT:
+    analytics_hub: ${PBI_SIT_ANALYTICS_HUB_WORKSPACE_ID}
+    sales_spoke: ${PBI_SIT_SALES_SPOKE_WORKSPACE_ID}
+
+  PRD:
+    analytics_hub: ${PBI_PRD_ANALYTICS_HUB_WORKSPACE_ID}
+    sales_spoke: ${PBI_PRD_SALES_SPOKE_WORKSPACE_ID}

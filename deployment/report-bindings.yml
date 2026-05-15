@@ -1,0 +1,8 @@
+# Report-to-semantic-model binding rules.
+# Used after deployment to point thin/live reports to the correct semantic model.
+
+bindings:
+  - report_name: Sales Performance
+    report_workspace_key: sales_spoke
+    semantic_model_name: Sales Analytics
+    semantic_model_workspace_key: analytics_hub
